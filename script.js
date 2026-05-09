@@ -2,6 +2,7 @@ const botones = document.querySelectorAll(".tablero button");
 const mensaje = document.getElementById("mensaje");
 const linea = document.getElementById("linea-ganadora");
 const reiniciar = document.getElementById("reiniciar");
+const historial = document.getElementById("historial");
 
 let turno = "X";
 let juegoTerminado = false;
@@ -48,6 +49,7 @@ function verificarGanador() {
 
       mensaje.textContent =
         `Juego terminado - Ganó ${botones[a].textContent}`;
+        guardarResultado(botones[a].textContent);
 
       dibujarLinea(comb);
     }
@@ -87,3 +89,37 @@ reiniciar.addEventListener("click", () => {
 
   linea.style.width = "0";
 });
+function guardarResultado(ganador) {
+
+  let partidas =
+    JSON.parse(localStorage.getItem("partidas")) || [];
+
+  partidas.push(`Ganó ${ganador}`);
+
+  localStorage.setItem(
+    "partidas",
+    JSON.stringify(partidas)
+  );
+
+  mostrarHistorial();
+}
+
+function mostrarHistorial() {
+
+  historial.innerHTML = "";
+
+  let partidas =
+    JSON.parse(localStorage.getItem("partidas")) || [];
+
+  partidas.forEach((partida, index) => {
+
+    const item = document.createElement("li");
+
+    item.textContent =
+      `Partida ${index + 1}: ${partida}`;
+
+    historial.appendChild(item);
+  });
+}
+
+mostrarHistorial();
