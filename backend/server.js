@@ -1,64 +1,56 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
-const sqlite3 = require("sqlite3").verbose();
+const fs = require("fs");
+
+const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-const db = new sqlite3.Database("./tateti.db");
-
-db.serialize(() => {
-
-  db.run(`
-    CREATE TABLE IF NOT EXISTS partidas (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      ganador TEXT
-    )
-  `);
-
-});
+const archivo = "./partidas.json";
 
 app.get("/", (req, res) => {
   res.send("Servidor funcionando");
 });
 
-app.post("/partidas", (req, res) => {
-
-  const ganador = req.body.ganador;
-
-  db.run(
-    "INSERT INTO partidas (ganador) VALUES (?)",
-    [ganador],
-    function(err) {
-
-      if (err) {
-        return res.status(500).send(err.message);
-      }
-
-      res.send("Partida guardada");
-    }
-  );
-
-});
-
 app.get("/partidas", (req, res) => {
 
-  db.all(
-    "SELECT * FROM partidas",
-    [],
-    (err, rows) => {
+  const datos =
+    fs.readFileSync(archivo);
 
-      if (err) {
-        return res.status(500).send(err.message);
-      }
+  const partidas =
+    JSON.parse(datos);
 
-      res.json(rows);
-    }
+  res.json(partidas);
+});
+
+app.post("/partidas", (req, res) => {
+
+  const datos =
+    fs.readFileSync(archivo);
+
+  const partidas =
+    JSON.parse(datos);
+
+  const nuevaPartida = {
+    id: partidas.length + 1,
+    ganador: req.body.ganador
+  };
+
+  partidas.push(nuevaPartida);
+
+  fs.writeFileSync(
+    archivo,
+    JSON.stringify(partidas, null, 2)
   );
 
+  res.json(nuevaPartida);
 });
 
 app.listen(3000, () => {
-  console.log("Servidor corriendo en puerto 3000");
+
+  console.log(
+    "Servidor corriendo en puerto 3000"
+  );
+
 });
