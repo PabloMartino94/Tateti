@@ -49,7 +49,9 @@ function verificarGanador() {
 
       mensaje.textContent =
         `Juego terminado - Ganó ${botones[a].textContent}`;
-        guardarResultado(botones[a].textContent);
+        guardarResultado(
+  botones[a].textContent
+);
 
       dibujarLinea(comb);
     }
@@ -89,37 +91,46 @@ reiniciar.addEventListener("click", () => {
 
   linea.style.width = "0";
 });
-function guardarResultado(ganador) {
+async function guardarResultado(ganador) {
 
-  let partidas =
-    JSON.parse(localStorage.getItem("partidas")) || [];
+  await fetch("http://localhost:3000/partidas", {
 
-  partidas.push(`Ganó ${ganador}`);
+    method: "POST",
 
-  localStorage.setItem(
-    "partidas",
-    JSON.stringify(partidas)
-  );
+    headers: {
+      "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify({
+      ganador: ganador
+    })
+
+  });
 
   mostrarHistorial();
 }
 
-function mostrarHistorial() {
+async function mostrarHistorial() {
 
   historial.innerHTML = "";
 
-  let partidas =
-    JSON.parse(localStorage.getItem("partidas")) || [];
+  const respuesta =
+    await fetch("http://localhost:3000/partidas");
 
-  partidas.forEach((partida, index) => {
+  const partidas =
+    await respuesta.json();
 
-    const item = document.createElement("li");
+  partidas.forEach((partida) => {
+
+    const item =
+      document.createElement("li");
 
     item.textContent =
-      `Partida ${index + 1}: ${partida}`;
+      `Partida ${partida.id}: ganó ${partida.ganador}`;
 
     historial.appendChild(item);
   });
+
 }
 
 mostrarHistorial();
