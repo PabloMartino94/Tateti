@@ -93,7 +93,7 @@ reiniciar.addEventListener("click", () => {
 });
 async function guardarResultado(ganador) {
 
-  await fetch("http://localhost:3000/partidas", {
+  await fetch("https://tateti-backend.onrender.com/partidas", {
 
     method: "POST",
 
@@ -115,7 +115,7 @@ async function mostrarHistorial() {
   historial.innerHTML = "";
 
   const respuesta =
-    await fetch("http://localhost:3000/partidas");
+    await fetch("https://tateti-backend.onrender.com/partidas");
 
   const partidas =
     await respuesta.json();
