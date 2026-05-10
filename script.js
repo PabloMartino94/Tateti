@@ -24,6 +24,10 @@ botones.forEach((boton, index) => {
     if (boton.textContent === "" && !juegoTerminado) {
 
       boton.textContent = turno;
+      boton.classList.add(turno === "X" ? "x-mark" : "o-mark");
+      boton.classList.remove("aparecer");
+      void boton.offsetWidth; // fuerza reflow para reiniciar la animación
+      boton.classList.add("aparecer");
 
       verificarGanador();
 
@@ -54,6 +58,7 @@ function verificarGanador() {
 );
 
       dibujarLinea(comb);
+      comb.forEach(i => botones[i].classList.add("ganadora"));
     }
 
   });
@@ -82,6 +87,7 @@ reiniciar.addEventListener("click", () => {
 
   botones.forEach(boton => {
     boton.textContent = "";
+    boton.classList.remove("x-mark", "o-mark", "ganadora", "aparecer");
   });
 
   turno = "X";

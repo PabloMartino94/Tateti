@@ -2,35 +2,41 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tateti</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <h1>Tateti</h1>
 
-<div class="contenedor-tablero">
-  <div id="linea-ganadora"></div>
+  <div class="game-card">
+    <div class="contenedor-tablero">
+      <div id="linea-ganadora"></div>
 
-  <div class="tablero">
-    <button></button>
-    <button></button>
-    <button></button>
-    <button></button>
-    <button></button>
-    <button></button>
-    <button></button>
-    <button></button>
-    <button></button>
+      <div class="tablero">
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+      </div>
+    </div>
   </div>
-</div>
 
-<h2 id="mensaje"></h2>
+  <h2 id="mensaje"></h2>
 
-<button id="reiniciar">Reiniciar</button>
-<h2>Historial de partidas</h2>
+  <button id="reiniciar">Reiniciar</button>
+  <h2 class="titulo-historial">Historial de partidas</h2>
 
-<ul id="historial"></ul>
+  <ul id="historial"></ul>
 
   <script src="script.js"></script>
 </body>
